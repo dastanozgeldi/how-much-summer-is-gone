@@ -3,31 +3,53 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [percentage, setPercentage] = useState("0");
+  const [day, setDay] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
 
-  const calculatePercentage = () => {
+  const calculateDays = () => {
     const currentDate = new Date();
     const lastDayOfSummer = new Date("August 31, 2023 23:59:59");
 
-    const left =
-      (lastDayOfSummer.getTime() - currentDate.getTime()) / 24 / 60 / 60 / 1000;
+    const leftDay = lastDayOfSummer.getDate() - currentDate.getDate();
+    const leftHours = lastDayOfSummer.getHours() - currentDate.getHours();
+    const leftMinutes = lastDayOfSummer.getMinutes() - currentDate.getMinutes();
+    const leftSeconds = lastDayOfSummer.getSeconds() - currentDate.getSeconds();
 
-    setPercentage(left.toFixed(6));
+    setDay(leftDay);
+    setHours(leftHours);
+    setMinutes(leftMinutes);
+    setSeconds(leftSeconds);
   };
 
   useEffect(() => {
-    calculatePercentage();
-    const interval = setInterval(calculatePercentage, 100);
+    calculateDays();
+    const interval = setInterval(calculateDays, 100);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="max-w-[1280px] mx-auto p-[2rem] text-center space-y-3">
-      <h1 className="font-extrabold text-6xl">
-        {percentage.split(".")[0]}
-        <span className="mx-1 text-xl">.{percentage.split(".")[1]}</span>
-      </h1>
-      <h2 className="text-xl opacity-75">days till school</h2>
+      <div className="flex gap-5 justify-center items-end">
+        <div className="block">
+          <h1 className="font-extrabold text-6xl">{day}</h1>
+          <span className="text-3xl">days</span>
+        </div>
+        <div className="block">
+          <h1 className="font-extrabold text-5xl">{hours}</h1>
+          <span className="text-2xl">hours</span>
+        </div>
+        <div className="block">
+          <h1 className="font-extrabold text-4xl">{minutes}</h1>
+          <span className="text-xl">minutes</span>
+        </div>
+        <div className="block">
+          <h1 className="font-extrabold text-3xl">{seconds}</h1>
+          <span className="text-lg">seconds</span>
+        </div>
+      </div>
+      <h2 className="text-xl opacity-75">till school</h2>
     </div>
   );
 }
